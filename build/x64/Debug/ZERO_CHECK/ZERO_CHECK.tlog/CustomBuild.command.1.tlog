@@ -1,0 +1,10 @@
+^C:\USERS\MAIJA\DESKTOP\PART1\BUILD\CMAKEFILES\51616C982819E17268463725FE2B3E9B\GENERATE.STAMP.RULE
+setlocal
+C:\dev\bin\cmake.exe -SC:/Users/maija/Desktop/Part1 -BC:/Users/maija/Desktop/Part1/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/maija/Desktop/Part1/build/machine.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

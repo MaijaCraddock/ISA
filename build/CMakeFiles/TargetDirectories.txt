@@ -1,0 +1,3 @@
+C:/Users/maija/Desktop/Part1/build/CMakeFiles/machine.dir
+C:/Users/maija/Desktop/Part1/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/maija/Desktop/Part1/build/CMakeFiles/ZERO_CHECK.dir

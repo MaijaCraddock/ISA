@@ -1,0 +1,10 @@
+C:\Users\maija\Desktop\Part1\src\Machine.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\Machine.obj
+C:\Users\maija\Desktop\Part1\src\HelperFunctions.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\HelperFunctions.obj
+C:\Users\maija\Desktop\Part1\src\ConfigParser.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\ConfigParser.obj
+C:\Users\maija\Desktop\Part1\src\SignExtend.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\SignExtend.obj
+C:\Users\maija\Desktop\Part1\src\RegisterFile.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\RegisterFile.obj
+C:\Users\maija\Desktop\Part1\src\PC.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\PC.obj
+C:\Users\maija\Desktop\Part1\src\CSR.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\CSR.obj
+C:\Users\maija\Desktop\Part1\src\Hart.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\Hart.obj
+C:\Users\maija\Desktop\Part1\src\MachineCore.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\MachineCore.obj
+C:\Users\maija\Desktop\Part1\src\ELFParser.cpp;C:\Users\maija\Desktop\Part1\build\machine.dir\Debug\ELFParser.obj
