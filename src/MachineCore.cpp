@@ -9,7 +9,7 @@ MachineCore::MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, std::ui
 	//couldnt dynamically allocate an array because Hart has no default constructor
 	m_hartVector.reserve(numHarts);
 	for (std::uint32_t i = 0; i < numHarts; ++i) {
-		m_hartVector.push_back(Hart(i, mmuState, m_ram, bpRows, bpDefault));
+		m_hartVector.emplace_back(i, mmuState, m_ram, bpRows, bpDefault);
 	}
 }
 
@@ -27,7 +27,7 @@ void MachineCore::printMachineCore() const {
 	printf(" -- HART VECTOR PRINT --\n");
 	for (std::uint32_t hartIdx = 0; hartIdx < m_numHarts; hartIdx++) {
 		printf("\n");
-		Hart currHart = m_hartVector[hartIdx];
+		const Hart& currHart = m_hartVector[hartIdx];
 		currHart.print();
 
 	}
