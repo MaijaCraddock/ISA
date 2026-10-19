@@ -72,36 +72,36 @@ namespace {
     //flags set from the config file do not set the dirty bit, because the latest flag takes precedence
     std::map<std::string, uint8_t> flagDirtyBit
     {
-        {"f", 0},
-        {"i", 0},
-        {"o", 0},
-        {"m", 0},
-        {"a", 0},
-        {"mem", 0},
-        {"harts", 0},
-        {"hz", 0},
-        {"cL", 0},
-        {"c1", 0},
-        {"c2", 0},
-        {"c3", 0},
-        {"cS1", 0},
-        {"cS2", 0},
-        {"cS3", 0},
-        {"cB1", 0},
-        {"cB2", 0},
-        {"cB3", 0},
-        {"cW1", 0},
-        {"cW2", 0},
-        {"cW3", 0},
-        {"cE1", 0},
-        {"cE2", 0},
-        {"cE3", 0},
-        {"cC", 0},
-        {"bp", 0},
-        {"bpD", 0},
-        {"mmu", 0},
-        {"tlb", 0},
-        {"tlbE", 0}
+        {"f",       std::uint8_t{0}},
+        {"i",       std::uint8_t{0}},
+        {"o",       std::uint8_t{0}},
+        {"m",       std::uint8_t{0}},
+        {"a",       std::uint8_t{0}},
+        {"mem",     std::uint8_t{0}},
+        {"harts",   std::uint8_t{0}},
+        {"hz",      std::uint8_t{0}},
+        {"cL",      std::uint8_t{0}},
+        {"c1",      std::uint8_t{0}},
+        {"c2",      std::uint8_t{0}},
+        {"c3",      std::uint8_t{0}},
+        {"cS1",     std::uint8_t{0}},
+        {"cS2",     std::uint8_t{0}},
+        {"cS3",     std::uint8_t{0}},
+        {"cB1",     std::uint8_t{0}},
+        {"cB2",     std::uint8_t{0}},
+        {"cB3",     std::uint8_t{0}},
+        {"cW1",     std::uint8_t{0}},
+        {"cW2",     std::uint8_t{0}},
+        {"cW3",     std::uint8_t{0}},
+        {"cE1",     std::uint8_t{0}},
+        {"cE2",     std::uint8_t{0}},
+        {"cE3",     std::uint8_t{0}},
+        {"cC",      std::uint8_t{0}},
+        {"bp",      std::uint8_t{0}},
+        {"bpD",     std::uint8_t{0}},
+        {"mmu",     std::uint8_t{0}},
+        {"tlb",     std::uint8_t{0}},
+        {"tlbE",    std::uint8_t{0}}
     };
 
     //Flag Convertion functions called in flagValueToConfigParser
@@ -333,6 +333,7 @@ namespace {
             return ConfigParser::BranchDefault::StronglyTaken;
             //default not needed, values outside of 0-3 will throw in convRangedUint32
         }
+        return ConfigParser::BranchDefault::BranchError; //should never be reached, just to get rid of warning
     }
 
     //does not return anything, helper::fatalError() on invalid, return from func on valid
@@ -583,7 +584,7 @@ namespace cfg {
         return flagValueToConfigParser();
     }
 
-    const void printConfigStringTypes(ConfigParser conf) 
+    const void printConfigStringTypes() 
     {
         {
             for (const auto& [fk, fv] : flagValueMap) {

@@ -1,23 +1,18 @@
 #include "MachineCore.hpp"
 
-MachineCore::MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, std::uint8_t mmuState)
+MachineCore::MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, std::uint8_t mmuState, std::uint32_t bpRows, std::uint8_t bpDefault)
+	: m_mmuState { mmuState }
+	, m_memBytes { memBytes }
+	, m_ram		 { RAM(memBytes) }
+	, m_numHarts { numHarts }
 {
-	MachineCore::m_mmuState = mmuState;
-	MachineCore::m_memBytes = memBytes;
-	MachineCore::m_ram = new std::uint8_t[memBytes]{};
 	//couldnt dynamically allocate an array because Hart has no default constructor
-	MachineCore::m_numHarts = numHarts;
-	MachineCore::m_hartVector.reserve(numHarts);
+	m_hartVector.reserve(numHarts);
 	for (std::uint32_t i = 0; i < numHarts; ++i) {
-		m_hartVector.push_back(Hart(i, mmuState));
+		m_hartVector.push_back(Hart(i, mmuState, m_ram, bpRows, bpDefault));
 	}
 }
 
-//ignoring rule of three...
-MachineCore::~MachineCore()
-{
-	delete[] MachineCore::m_ram;
-}
 
 Hart& MachineCore::getHart(std::uint32_t hartID)
 {
@@ -39,16 +34,23 @@ void MachineCore::printMachineCore() const {
 }
 
 void MachineCore::printRam(std::uint32_t start, std::uint32_t end, std::uint32_t bytesPerLine) {
-	std::uint32_t count = 0;
-	std::cout << start << " : ";
-	for (std::uint32_t idx = start; idx <= end; idx++) {
-		std::cout << std::format("{:02x} ", m_ram[idx]);
-		count++;
-		if (count >= bytesPerLine) { 
-			std::cout << std::endl << idx << " : ";
-			count = 0; 
+	if (end > m_memBytes) { end = m_memBytes; }
+	if (bytesPerLine == 0) { bytesPerLine = 16; }
+
+	for (std::uint32_t addr = start; addr < end; addr++) {
+		//label each row with the address of its first byte
+		if ((addr - start) % bytesPerLine == 0) {
+			std::cout << addr << " : ";
+		}
+		std::cout << std::format("{:02x} ", m_ram.read(addr, 1, AccessType::Load).value);
+		if ((addr - start) % bytesPerLine == bytesPerLine - 1 || addr + 1 == end) {
+			std::cout << std::endl;
 		}
 	}
 }
 
-//loadRamAtIndex functions located in MachineCore.hpp (templated)
+void MachineCore::loadRamAtIndex(const std::uint8_t* src, std::uint32_t elements, std::uint32_t addr)
+{
+	m_ram.loadAtIndex(src, elements, addr);
+}
+

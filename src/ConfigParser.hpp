@@ -63,7 +63,8 @@ struct ConfigParser {
         StronglyNotTaken = 0,
         WeaklyNotTaken = 1,
         WeaklyTaken = 2,
-        StronglyTaken = 3
+        StronglyTaken = 3,
+        BranchError = 4
     };
 
     //files are set only in CLI
@@ -129,6 +130,6 @@ struct ConfigParser {
 //scoped in an anonymous namespace in the .cpp file
 namespace cfg {
     ConfigParser parseConfig(int32_t argc, char** argv, std::uint8_t debug=0);
-    const void printConfigStringTypes(ConfigParser conf);
+    const void printConfigStringTypes();
     const void printConfigUnderlyingTypes(ConfigParser conf);
 }

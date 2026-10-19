@@ -1,11 +1,13 @@
 #include "Hart.hpp"
-
 //MUST use member intializer list, CSR has no defualt constructor
-Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState)
-	: m_hartId			{ hartId}
-	, m_registerFile	{ RegisterFile()}
+Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t bpRows, std::uint8_t bpDefault)
+	: m_hartId			{ hartId }
+	, m_status			{ HartStatus::Running }
+	, m_registerFile	{ RegisterFile() }
 	, m_CSR				{ CSR(hartId, mmuState) }
-	, m_PC				{ PC()}
+	, m_PC				{ PC() }
+	, m_memorySeam		{ ram }
+	, m_Fetch			{ Fetch(*this, m_memorySeam, bpRows, bpDefault) }
 {
 }
 
@@ -51,4 +53,30 @@ void Hart::print() const{
 	printf("	* Register (minstreth) %" PRIu16 ": %" PRIu32 "\n", k_instreth,	m_CSR.read(k_instreth));
 
 	printf("	Program Counter: %" PRIu32 "\n", m_PC.getPC());
+}
+
+HartStatus Hart::getStatus() const
+{
+	return m_status;
+}
+
+void Hart::park(HartStatus s)
+{
+	//park Hart with status s
+	m_status = s;
+}
+
+void Hart::start()
+{
+	m_Fetch.start();
+}
+
+void Hart::rising_edge()
+{
+	m_Fetch.rising_edge();
+}
+
+void Hart::falling_edge()
+{
+	m_Fetch.falling_edge();
 }

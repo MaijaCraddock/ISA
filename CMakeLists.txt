@@ -34,6 +34,17 @@ add_executable(machine
 
     src/ELFParser.hpp
     src/ELFParser.cpp
+
+    src/IMemorySeam.hpp
+
+    src/RAM.hpp
+    src/RAM.cpp
+
+    src/BranchPredictor.hpp
+    src/BranchPredictor.cpp
+
+    src/Fetch.hpp
+    src/Fetch.cpp
 )
 
 target_include_directories(machine PRIVATE src)
