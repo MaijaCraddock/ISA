@@ -23,7 +23,7 @@ void Fetch::start()
 }
 
 
-const IntermediateRegister& Fetch::outputLatch() const
+const FetchIntermediateRegister& Fetch::outputLatch() const
 {
 	return m_current;
 }
@@ -50,9 +50,9 @@ const BranchPredictor& Fetch::predictor() const
 	return m_predictor;
 }
 
-IntermediateRegister Fetch::bubble()
+FetchIntermediateRegister Fetch::bubble()
 {
-	IntermediateRegister nop;
+	FetchIntermediateRegister nop;
 	nop.instr.inst = kNOP;
 	return nop;
 }
@@ -71,7 +71,7 @@ std::int32_t Fetch::branchDisplacement(std::uint32_t inst)
 //set front buffer to back buffer
 void Fetch::swapLatch(std::uint32_t inst, std::uint32_t pc, State state)
 {
-	IntermediateRegister out;
+	FetchIntermediateRegister out;
 	out.instr.inst = inst; 
 	out.currPC = pc;
 

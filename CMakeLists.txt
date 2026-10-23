@@ -45,6 +45,9 @@ add_executable(machine
 
     src/Fetch.hpp
     src/Fetch.cpp
+
+    src/Decode.hpp
+    src/Decode.cpp
 )
 
 target_include_directories(machine PRIVATE src)

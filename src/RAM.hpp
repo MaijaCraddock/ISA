@@ -10,7 +10,7 @@ public:
 	std::uint32_t getSize() const;
 	MemResult read(std::uint32_t addr, std::uint8_t size, AccessType type) override;
 	MemResult write(std::uint32_t addr, std::uint8_t size, std::uint32_t value) override;
-	std::uint8_t loadAtIndex(const std::uint8_t* src, std::uint32_t elements, std::uint32_t addr); // ELF return bool (uint8_t)
+	void loadAtIndex(const std::uint8_t* src, std::uint32_t elements, std::uint32_t addr); //fatalError on failure
 private:
 	std::uint8_t inBounds(std::uint32_t addr, std::uint32_t count) const; //return bool (uint8_t)
 	std::uint32_t m_size;

@@ -5,7 +5,9 @@
 
 int main(std::int32_t argc, char** argv) {
 	ConfigParser conf = cfg::parseConfig(argc, argv, false);
-	MachineCore machineCore(conf.m_memBytes, conf.m_numHarts, std::to_underlying(conf.m_mmuState), conf.m_branchPredictorRows, std::to_underlying(conf.m_branchDefault));
+	MachineCore machineCore(conf.m_memBytes, conf.m_numHarts, 
+		std::to_underlying(conf.m_mmuState), conf.m_branchPredictorRows, std::to_underlying(conf.m_branchDefault),
+		std::to_underlying(conf.m_extM), std::to_underlying(conf.m_extA));
 	printf(" -- CONFIG PRINT (STRING FORM - FLAGS NOT IN ORDER) --\n\n");
 	cfg::printConfigStringTypes();
 	printf("\n -- CONFIG PRINT (UNDERLYING VALUE FORM) --\n\n");

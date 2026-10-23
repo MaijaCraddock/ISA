@@ -5,6 +5,7 @@
 #include "RegisterFile.hpp"
 #include "IMemorySeam.hpp"
 #include "Fetch.hpp"
+#include "Decode.hpp"
 
 #include <memory>
 #include <cinttypes>
@@ -14,7 +15,10 @@ enum class HartStatus : std::int32_t { Running, Stopped, StorePageFault, LoadPag
 class Hart
 {
 public:
-	Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t bpRows, std::uint8_t bpDefault);
+	Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t bpRows, std::uint8_t bpDefault, std::uint8_t extM, std::uint8_t extA);
+	//disable copying
+	Hart(const Hart&) = delete;
+	Hart& operator=(const Hart&) = delete;
 
 	//these will possibly be replaced with functions that call RegisterFile/CSR/PC/etc. functions from a Hart
 	//for now, we will just return a reference, and the machine will call functions from the reference
@@ -37,5 +41,6 @@ private:
 	PC m_PC;
 	IMemorySeam& m_memorySeam;
 	Fetch m_Fetch;
+	Decode m_Decode;
 };
 

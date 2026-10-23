@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <iostream>
 #include <charconv>
-#include <vector>
+#include <deque>
 #include <format> 
 #include "Hart.hpp"
 #include "RAM.hpp"
@@ -11,7 +11,9 @@ class MachineCore
 {
 
 public:
-	MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, std::uint8_t mmuState, std::uint32_t bpRows, std::uint8_t bpDefault); 
+	MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, 
+		std::uint8_t mmuState, std::uint32_t bpRows, std::uint8_t bpDefault, 
+		std::uint8_t extM, std::uint8_t extA);
 
 	Hart& getHart(std::uint32_t hartID);
 
@@ -26,6 +28,6 @@ private:
 	std::uint8_t m_mmuState;
 
 	RAM m_ram;
-	std::vector<Hart> m_hartVector;
+	std::deque<Hart> m_hartDeque;
 
 };

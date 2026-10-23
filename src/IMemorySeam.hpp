@@ -18,5 +18,5 @@ public:
 	virtual ~IMemorySeam() = default;
 	virtual MemResult read(std::uint32_t addr, std::uint8_t size, AccessType type) = 0;
 	virtual MemResult write(std::uint32_t addr, std::uint8_t size, std::uint32_t value) = 0;
-	IMemorySeam* m_next ; //next object in the memory seam architecture, not implemented yet, as RAM is the bottom of the seam
+	IMemorySeam* m_next = nullptr; //next object in the memory seam architecture, not implemented yet, as RAM is the bottom of the seam
 };

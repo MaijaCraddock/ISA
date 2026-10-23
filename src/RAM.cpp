@@ -1,4 +1,5 @@
 #include "RAM.hpp"
+#include "HelperFunctions.hpp"
 #include <cstring>
 
 RAM::RAM(std::uint32_t n) 
@@ -51,13 +52,12 @@ MemResult RAM::write(std::uint32_t addr, std::uint8_t size, std::uint32_t value)
 	return r;
 }
 
-std::uint8_t RAM::loadAtIndex(const std::uint8_t* src, uint32_t elements, std::uint32_t addr) 
+void RAM::loadAtIndex(const std::uint8_t* src, uint32_t elements, std::uint32_t addr) 
 {
 	if (!inBounds(addr, elements)) {
-		return 0;
+		helper::fatalError("Not enough space in RAM");
 	}
 
 	//already in little endian (read from ELF)
 	std::memcpy(&m_bytes[addr], src, elements);
-	return 1;
 }

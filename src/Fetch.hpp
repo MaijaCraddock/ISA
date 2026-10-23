@@ -17,7 +17,7 @@ struct Instruction
 	std::uint8_t aluop = 0;
 };
 
-struct IntermediateRegister 
+struct FetchIntermediateRegister 
 {
 	Instruction instr;
 	std::uint32_t currPC = 0;
@@ -36,7 +36,7 @@ public:
 	void rising_edge();
 	void falling_edge();
 
-	const IntermediateRegister& outputLatch() const;
+	const FetchIntermediateRegister& outputLatch() const;
 
 	void requestStall();
 	void requestRedirect(std::uint32_t target);
@@ -44,7 +44,7 @@ public:
 
 	const BranchPredictor& predictor() const;
 
-	static IntermediateRegister bubble();
+	static FetchIntermediateRegister bubble();
 
 private:
 	static constexpr std::uint8_t  kInstructionBytes = 4;
@@ -56,7 +56,7 @@ private:
 	struct NextLatch
 	{
 		State state = State::Idle;
-		IntermediateRegister out;
+		FetchIntermediateRegister out;
 		std::uint32_t inst = 0;
 		std::uint32_t pc = 0;
 		std::uint32_t latency = 0;
@@ -76,7 +76,7 @@ private:
 	Hart& m_hart;
 	IMemorySeam& m_memory;
 	BranchPredictor m_predictor;
-	IntermediateRegister m_current;
+	FetchIntermediateRegister m_current;
 	NextLatch m_next;
 
 	std::uint8_t m_hasHeld = 0;

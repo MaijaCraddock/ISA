@@ -1,22 +1,23 @@
 #include "MachineCore.hpp"
 
-MachineCore::MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, std::uint8_t mmuState, std::uint32_t bpRows, std::uint8_t bpDefault)
-	: m_mmuState { mmuState }
-	, m_memBytes { memBytes }
+MachineCore::MachineCore(std::uint32_t memBytes, std::uint32_t numHarts, 
+	std::uint8_t mmuState, std::uint32_t bpRows, std::uint8_t bpDefault, 
+	std::uint8_t extM, std::uint8_t extA)
+	: m_memBytes{ memBytes }
+	, m_numHarts{ numHarts }
+	, m_mmuState { mmuState }
 	, m_ram		 { RAM(memBytes) }
-	, m_numHarts { numHarts }
 {
 	//couldnt dynamically allocate an array because Hart has no default constructor
-	m_hartVector.reserve(numHarts);
+	//must use a deque after disabling copying of Harts (Vector copies when resize happens, which shouldnt in this case, but is still unsafe)
 	for (std::uint32_t i = 0; i < numHarts; ++i) {
-		m_hartVector.emplace_back(i, mmuState, m_ram, bpRows, bpDefault);
+		m_hartDeque.emplace_back(i, mmuState, m_ram, bpRows, bpDefault, extM, extA);
 	}
 }
 
-
 Hart& MachineCore::getHart(std::uint32_t hartID)
 {
-	return m_hartVector[hartID];
+	return m_hartDeque[hartID];
 }
 
 void MachineCore::printMachineCore() const {
@@ -24,12 +25,10 @@ void MachineCore::printMachineCore() const {
 		   "MMU State:       %" PRIu8 "\n"
 		   "Number of Harts: %" PRIu32 "\n"
 		, MachineCore::m_memBytes, MachineCore::m_mmuState, MachineCore::m_numHarts);
-	printf(" -- HART VECTOR PRINT --\n");
+	printf(" -- HART DEQUE PRINT --\n");
 	for (std::uint32_t hartIdx = 0; hartIdx < m_numHarts; hartIdx++) {
 		printf("\n");
-		const Hart& currHart = m_hartVector[hartIdx];
-		currHart.print();
-
+		m_hartDeque[hartIdx].print();
 	}
 }
 

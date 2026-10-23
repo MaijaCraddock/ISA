@@ -1,6 +1,6 @@
 #include "Hart.hpp"
 //MUST use member intializer list, CSR has no defualt constructor
-Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t bpRows, std::uint8_t bpDefault)
+Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t bpRows, std::uint8_t bpDefault, std::uint8_t extM, std::uint8_t extA)
 	: m_hartId			{ hartId }
 	, m_status			{ HartStatus::Running }
 	, m_registerFile	{ RegisterFile() }
@@ -8,8 +8,10 @@ Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t 
 	, m_PC				{ PC() }
 	, m_memorySeam		{ ram }
 	, m_Fetch			{ Fetch(*this, m_memorySeam, bpRows, bpDefault) }
+	, m_Decode			{ Decode(m_registerFile, m_Fetch.outputLatch(), extM, extA) }
 {
 }
+
 
 RegisterFile& Hart::getRegisterFile()
 {
@@ -74,9 +76,11 @@ void Hart::start()
 void Hart::rising_edge()
 {
 	m_Fetch.rising_edge();
+	m_Decode.rising_edge();
 }
 
 void Hart::falling_edge()
 {
 	m_Fetch.falling_edge();
+	m_Decode.falling_edge();
 }
