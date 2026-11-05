@@ -56,6 +56,8 @@ namespace
 	constexpr std::uint8_t kAmoXorFunct5	= 0b00100u;
 	constexpr std::uint8_t kAmoAndFunct5	= 0b01100u;
 	constexpr std::uint8_t kAmoOrFunct5		= 0b01000u;
+	constexpr std::uint8_t kAmoMinFunct5	= 0b10000u;
+	constexpr std::uint8_t kAmoMaxFunct5	= 0b10100u;
 	constexpr std::uint8_t kAmoMinuFunct5	= 0b11000u;
 	constexpr std::uint8_t kAmoMaxuFunct5	= 0b11100u;
 
@@ -87,8 +89,8 @@ namespace
 	std::uint8_t getFunct7(std::uint32_t inst)	{ return static_cast<std::uint8_t>((inst >> 25) & 0b1111111u);	}
 	
 	std::uint8_t getFunct5(std::uint32_t inst)	{ return static_cast<std::uint8_t>((inst >> 27) & 0b11111u);	}
-	std::uint8_t getAq(std::uint32_t inst)		{ return static_cast<std::uint8_t>((inst >> 26) & 0b1u);		}
-	std::uint8_t getRl(std::uint32_t inst)		{ return static_cast<std::uint8_t>((inst >> 25) & 0b1u);		}
+	//std::uint8_t getAq(std::uint32_t inst)		{ return static_cast<std::uint8_t>((inst >> 26) & 0b1u);		}	-- wasnt used, commenting in case implementation changes later
+	//std::uint8_t getRl(std::uint32_t inst)		{ return static_cast<std::uint8_t>((inst >> 25) & 0b1u);		}	-- wasnt used, commenting in case implementation changes later
 
 	std::int32_t getCSR(std::uint32_t inst)		{ return static_cast<std::int32_t>((inst >> 20) & 0xFFF);		}
 
@@ -356,7 +358,7 @@ std::uint8_t Decode::decodeImm(std::uint32_t inst, Instruction& d) const
 	case kSllFunct3:
 		if (funct7 != kAluOpFunct7) { return 0; }
 		aluOp = AluOp::LeftShift;
-		d.right = static_cast<std::int32_t>(getRs2(inst));
+		d.right = static_cast<std::int32_t>(getRs2(inst));	//sign extend is redundant, msb guaranteed 0
 		break;
 	case kSltFunct3:
 	case kSltuFunct3:
@@ -367,7 +369,7 @@ std::uint8_t Decode::decodeImm(std::uint32_t inst, Instruction& d) const
 		if(funct7 == kSra_SubFunct7) { aluOp = AluOp::RightShiftA; }
 		else if (funct7 == kAluOpFunct7){ aluOp = AluOp::RightShiftL; }
 		else { return 0; } //illegal funct7
-		d.right = static_cast<std::int32_t>(getRs2(inst));
+		d.right = static_cast<std::int32_t>(getRs2(inst));	//sign extend is redundant, msb guaranteed 0
 		break;
 	case kOrFunct3:
 		aluOp = AluOp::Or;
@@ -439,7 +441,7 @@ std::uint8_t Decode::decodeJalr(std::uint32_t inst, Instruction& d) const
 
 	d.left = readReg(getRs1(inst));
 	d.right = getImmIType(inst);
-	d.rd = static_cast<std::uint8_t>(getRd(inst));
+	d.rd = getRd(inst);
 	d.aluop = static_cast<std::uint8_t>(AluOp::Add);
 	return 1;
 }
@@ -483,6 +485,8 @@ std::uint8_t Decode::decodeAmo(std::uint32_t inst, Instruction& d) const
 	case kAmoXorFunct5:
 	case kAmoAndFunct5:
 	case kAmoOrFunct5:
+	case kAmoMinFunct5:
+	case kAmoMaxFunct5:
 	case kAmoMinuFunct5:
 	case kAmoMaxuFunct5:
 	case kSCFunct5:

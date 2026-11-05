@@ -9,6 +9,8 @@ Hart::Hart(std::uint32_t hartId, std::uint8_t mmuState, RAM& ram, std::uint32_t 
 	, m_memorySeam		{ ram }
 	, m_Fetch			{ Fetch(*this, m_memorySeam, bpRows, bpDefault) }
 	, m_Decode			{ Decode(m_registerFile, m_Fetch.outputLatch(), extM, extA) }
+	, m_memWbLatch		{ Decode::bubble() }
+	, m_Execute			{ Execute(m_Fetch, m_Decode, m_memWbLatch) }
 {
 }
 
@@ -77,10 +79,12 @@ void Hart::rising_edge()
 {
 	m_Fetch.rising_edge();
 	m_Decode.rising_edge();
+	m_Execute.rising_edge();
 }
 
 void Hart::falling_edge()
 {
 	m_Fetch.falling_edge();
 	m_Decode.falling_edge();
+	m_Execute.falling_edge();
 }

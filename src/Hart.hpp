@@ -6,6 +6,7 @@
 #include "IMemorySeam.hpp"
 #include "Fetch.hpp"
 #include "Decode.hpp"
+#include "Execute.hpp"
 
 #include <memory>
 #include <cinttypes>
@@ -42,5 +43,7 @@ private:
 	IMemorySeam& m_memorySeam;
 	Fetch m_Fetch;
 	Decode m_Decode;
+	ExecuteIntermediateRegister m_memWbLatch;
+	Execute m_Execute;
 };
 

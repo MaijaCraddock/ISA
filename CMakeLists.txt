@@ -48,13 +48,22 @@ add_executable(machine
 
     src/Decode.hpp
     src/Decode.cpp
+
+    src/Execute.hpp
+    src/Execute.cpp
 )
 
 target_include_directories(machine PRIVATE src)
 
 
 if (MSVC)
-    target_compile_options(machine PRIVATE /W4 /permissive-)
+    target_compile_options(machine PRIVATE
+        /W4 /permissive- /utf-8 /MP
+        /w14242 /w14254 /w14263 /w14265 /w14287 /w14296 /w14311 /w14545 /w14546 /w14547 /w14549 /w14555 /w14619 /w14640 /w14826 /w14905 /w14906 /w14928
+    )
 else()
-    target_compile_options(machine PRIVATE -Wall -Wextra)
+    target_compile_options(machine PRIVATE
+        -Wall -Wextra -Wpedantic -Wshadow -Wconversion -Wsign-conversion
+        -Wold-style-cast -Wuseless-cast -Wcast-qual
+    )
 endif()
